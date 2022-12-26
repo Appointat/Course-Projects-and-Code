@@ -75,7 +75,9 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="Appel d’Une Commande avec system().cpp" />
     <ClCompile Include="Création de Processus avec fork%28%29.cpp" />
+    <ClCompile Include="Recouvrement d’un Processus avec execv().cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

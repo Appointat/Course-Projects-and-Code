@@ -76,8 +76,15 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="Appel d’Une Commande avec system().cpp" />
+    <ClCompile Include="Code de Retour.cpp" />
     <ClCompile Include="Création de Processus avec fork%28%29.cpp" />
+    <ClCompile Include="Installation d’Une Fonction avec atexit().cpp" />
+    <ClCompile Include="Pipes Anonymes.cpp" />
+    <ClCompile Include="Pipes Nommés.cpp" />
+    <ClCompile Include="Processus Zombis.cpp" />
+    <ClCompile Include="Père et Fils de fork().cpp" />
     <ClCompile Include="Recouvrement d’un Processus avec execv().cpp" />
+    <ClCompile Include="Terminaisons Imprévues.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

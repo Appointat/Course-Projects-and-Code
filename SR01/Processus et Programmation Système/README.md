@@ -1,4 +1,4 @@
-# **SR01: System Operations Teaching Project**
+# **SR01: Processus et Programmation Système**
 
 Welcome to the SR01 project on GitHub! This project is a teaching resource for learning about system operations using Linux, C++, and the Visual Studio platform. The code in this repository is designed to run on a Linux system, but can also be compiled and run on Windows using Visual Studio.
 
@@ -12,6 +12,19 @@ In addition to the materials provided in this repository, the project also inclu
 
 We hope that this project will provide a valuable resource for anyone interested in learning about system operations. If you have any questions or encounter any issues while working on the project, feel free to open an issue in the repository or contact the project maintainers for assistance. We welcome contributions and feedback from the community. I appreciate your interest in SR01!
 
+Dans cette section, il y a des fonctions (la liste des fonctions):
+
+- Appel d’Une Commande avec system()
+- Code de Retour
+- Création de Processus avec fork()
+- Installation d’Une Fonction avec atexit()
+- Père et Fils de fork()
+- Pipes Anonymes
+- Pipes Nommés
+- Processus Zombis
+- Recouvrement d’Un Processus avec execv()
+- Terminaisons imprévues
+- Trouver des Premiers avec fork() et system() 
 
 
 ---

@@ -1,0 +1,273 @@
+#!/bin/bash
+
+# grep的选项
+
+# Would like use a regular expression
+grep -E 
+
+# 
+# grep -P
+
+# Lists the names of files whose contents conform to the specified pattern.
+grep -l
+
+#
+grep -L
+
+# Lists the lines that adept the specified pattern.
+grep -v
+
+
+# number of the lines found
+grep -c
+
+# Before displaying the row that conforms to the style, output the column number of the row
+grep -n
+
+
+
+#  grep的使用
+
+[^a-z]    ]	除了 小写字母以外的所有字符 
+[[:alpha:]]	任何字母
+[[:digit:]]	任何数字
+[[:alnum:]]	任何字母和数字
+[[:space:]]	任何空白字符
+[[:upper:]]	任何大写字母
+[[:lower:]]	任何小写字母
+[[:punct:]]	任何标点符号
+[[:xdigit:]]	任何16进制的数字，相当于[0-9a-fA-F]
+
+
+grep的工作方式是这样的，它在一个或多个文件中搜索字符串模板。如果模板包括空格，则必须被引用，模板后的所有字符串被看作文件名。搜索的结果被送到屏幕，不影响原文件内容。
+
+grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索的状态，如果模板搜索成功，则返回0，如果搜索不成功，则返回1，如果搜索的文件不存在，则返回2。我们利用这些返回值就可进行一些自动化的文本处理工作。
+
+匹配模式选择:
+ -E, --extended-regexp     扩展正则表达式egrep
+ -F, --fixed-strings       一个换行符分隔的字符串的集合fgrep
+ -G, --basic-regexp        基本正则
+ -P, --perl-regexp         调用的perl正则
+ -e, --regexp=PATTERN      后面根正则模式，默认无
+ -f, --file=FILE           从文件中获得匹配模式
+ -i, --ignore-case         不区分大小写
+ -w, --word-regexp         匹配整个单词
+ -x, --line-regexp         匹配整行
+ -z, --null-data           一个 0 字节的数据行，但不是空行
+
+杂项:
+ -s, --no-messages         不显示错误信息
+ -v, --invert-match        显示不匹配的行
+ -V, --version             显示版本号
+ --help                    显示帮助信息
+ --mmap                use memory-mapped input if possible
+
+输入控制:
+ -m, --max-count=NUM       匹配的最大数
+ -b, --byte-offset         打印匹配行前面打印该行所在的块号码。
+ -n, --line-number         显示的加上匹配所在的行号
+ --line-buffered           刷新输出每一行
+ -H, --with-filename       当搜索多个文件时，显示匹配文件名前缀
+ -h, --no-filename         当搜索多个文件时，不显示匹配文件名前缀
+ --label=LABEL            print LABEL as filename for standard input
+ -o, --only-matching       只显示一行中匹配PATTERN 的部分
+ -q, --quiet, --silent      不显示任何东西
+ --binary-files=TYPE   假定二进制文件的TYPE 类型；
+                                      TYPE 可以是`binary', `text', 或`without-match'
+ -a, --text                匹配二进制的东西
+ -I                        不匹配二进制的东西
+ -d, --directories=ACTION  目录操作，读取，递归，跳过
+ -D, --devices=ACTION      设置对设备，FIFO,管道的操作，读取，跳过
+ -R, -r, --recursive       递归调用
+ --include=PATTERN     只查找匹配FILE_PATTERN 的文件
+ --exclude=PATTERN     跳过匹配FILE_PATTERN 的文件和目录
+ --exclude-from=FILE   跳过所有除FILE 以外的文件
+ -L, --files-without-match 匹配多个文件时，显示不匹配的文件名
+ -l, --files-with-matches  匹配多个文件时，显示匹配的文件名
+ -c, --count               显示匹配的行数
+ -Z, --null                在FILE 文件最后打印空字符
+
+文件控制:
+ -B, --before-context=NUM  打印匹配本身以及前面的几个行由NUM控制
+ -A, --after-context=NUM   打印匹配本身以及随后的几个行由NUM控制
+ -C, --context=NUM         打印匹配本身以及随后，前面的几个行由NUM控制
+ -NUM                      根-C的用法一样的
+ --color[=WHEN],
+ --colour[=WHEN]       使用标志高亮匹配字串；
+ 
+ -U, --binary               使用标志高亮匹配字串；
+ -u, --unix-byte-offsets   当CR 字符不存在，报告字节偏移(MSDOS 模式)
+
+
+echo "Bojour, les amis" | grep [[:punct:] | [:space:]]
+
+
+
+# 正则表达式的应用
+cat tel.txt | grep '^0[6|7][[:digit:]]\{8\}'
+# 06/07+（符号+数字*2）*4 ： 比如 07-12-34-56-78
+cat tel.txt | grep '^0[6|7]\([[:punct:]]\?[[:digit:]]\{2\}\)\{4\}'
+# 字母串+ :// + 字母串 + .\? + 
+echo "http://www.utc.fr" | grep '^[http|ftp]\+://\([[:alpha:]]\.\?[[:alpha:]]\+\)\{,\}'
+echo "http://www.utc.fr:123" | grep '^[http]\+://\([[:alpha:]]\.\?[[:alpha:]]\+\)*\(:[[:digit:]]\+\)'
+
+
+
+# sed命令的应用
+# prenom=jean nom=bon domaine=utc.fr
+echo prenom=jean nom=bon domaine=etu.utc.fr | sed 's/.*=\(.*\) .*=\(.*\) .*=etu.\(.*\)/\1.\2@etu.\3/'
+
+
+
+# id, shell, groups等应用
+# Donner la commande permettant d’afficher les informations concernant le login courant.
+id
+
+
+# Donner la commande permettant d’afficher les informations concernant l’utilisateur Malena.
+id Malena
+
+
+# Donner la commande permettant de lister les utilisateurs connectés sur le serveur.
+who # afficher plus des informations
+w # afficher moins des informations
+
+
+# Donner la commande permettant de savoir depuis quelle console (shelll) êtes-vous connecté.
+echo $SHELL # $SHELL est le shell prefere de l'utisilateur
+echo $0 # Affichier le nom de la console ou du script en cours d'exécution
+cat /etc/shells
+
+
+
+
+# 1) 用户 afficher la liste des utilisateurs
+cat /etc/passwd | cut -d: -f1 # 'cut' -d用:来分隔成子项, -f选择第1项
+
+
+# 2) 群组 afficher la liste des groupes
+cat /etc/group | cut -d: -f1
+
+
+# 3) se mettre en mode root
+sudo -i
+
+
+# 5) configuration des information des groupes et des utilisateur
+cp /etc/passwd /etc/group /etc/shadow /etc/gshadow Sauvegarde # shadow is for the password
+
+Ø /etc/passwd 由冒号分隔的七个字段的文件，包含用户的基本信息informations de base sur les utilisateurs
+Ø /etc/group 由冒号分隔的四个字段组成的文件，包含组的基本信息
+Ø /etc/shadow 由冒号分隔的九个字段的文件，包含用户的散列密码
+Ø /etc/gshadow 由冒号分隔的四个字段的文件，包含哈希组密码
+
+
+# 6) 设置群组和密码 créer les groupes et les utilisateurs
+groupadd -g 1025 LINUX
+groupadd -g 1026 WINDOWS
+groupadd -g 1027 GrupD
+groupadd -g 1028 GroupV
+mkdir /home/{linux, windows}
+useradd --uid 2022 malena --home /home/linux/melena --create-home --groups LINUX --gid LINUX --shell /bin/bash
+useradd --uid 2023 xavier --home /home/linux/xavier --create-home --groups LINUX --gid LINUX --shell /bin/bash
+useradd --uid 2024 marie --home /home/windows/marie --create-home --groups WINDOWS --gid WINDOWS --shell /bin/bash
+useradd --uid 2025 david --home /home/windows/david --create-home --groups WINDOWS --gid WINDOWS --shell /bin/bash
+
+
+# 7) 设置密码 définir les mots de passe pour chaque utilisateur
+passwd melena
+passwd xavier
+passwd marie
+passwd david
+
+
+# 8) 这是密码的高级参数 Configurer les paramètres du mot de passe et du compte
+chage melena # methode 1
+passwd melena -x 60 -n 45 -w 5 -i 365
+# -x --maxday
+# -n -- mindays
+# -w -- warndays
+# -i --inactive
+
+
+
+# 2) 
+ls -l /tmp # drwxrwxrwt 19 root root 16K Dec 21 18:58 tmp 
+# delete permission : write
+# /tmp est ce que nous appelons un répertoire accessible en écriture pour tous, ce qui signifie que tout utilisateur peut y écrire. Mais nous ne voulons pas qu’un utilisateur modifie des fichiers créés par d’autres, donc le sticky bit est activé (comme indiqué par le t sur les permissions pour les autres). Cela signifie qu’un utilisateur peut supprimer des fichiers dans /tmp, mais seulement s’il a créé ces fichiers. /tmp 是我们所说的可写目录，这意味着任何用户都可以写入它。 但是我们不希望用户修改其他人创建的文件，因此"粘性位"处于打开状态（如其他人权限上的 t 所示）。 这意味着用户可以删除 /tmp 中的文件，但前提是他们创建了这些文件。
+
+
+# 3)
+chmod u-x test.sh
+ls -l test.sh # -rwSr-xr-x 1 carol carol 33 Dec 11 10:36 test.sh
+# le bit SUID montrent un s remplaçant le x sur les permissions
+# Nous avons supprimé les permissions d’exécution pour l’utilisateur qui possède le fichier. Le s (ou t) prend la place du x sur la sortie de ls -l, le système a donc besoin d’un moyen de montrer si l’utilisateur a des permissions d’exécution ou non. Il le fait en modifiant la casse du caractère spécial. 我们删除了拥有该文件的用户的执行权限。 s（或 t）取代了 ls -l 输出中的 x，因此系统需要一种方法来显示用户是否具有执行权限。 它通过改变特殊字符的大小写来做到这一点。
+# Un s minuscule sur le premier groupe de permissions signifie que l’utilisateur qui possède le fichier a des permissions d’exécution et que le bit SUID est activé. Un S majuscule signifie que l’utilisateur qui possède le fichier n’a pas (-) les permissions d’exécution et que le bit SUID est activé. 第一个权限组上的小写 s 表示拥有该文件的用户具有执行权限并且 SUID 位已打开。 大写 S 表示拥有该文件的用户没有 (-) 执行权限并且设置了 SUID 位。
+# On peut en dire autant du SGID. Un s minuscule sur le deuxième groupe de permissions signifie que le groupe qui possède le fichier a des permissions d’exécution et que le bit SGID est activé. Un S majuscule signifie que le groupe qui possède le fichier n’a pas les permissions d’exécution (-) et que le bit SGID est activé. SGID 也是如此。 第二个权限组上的小写 s 表示拥有该文件的组具有执行权限并且 SGID 位已打开。 大写 S 表示拥有该文件的组没有执行权限 (-)，并且 SGID 位已打开。
+# C'est également vrai pour le sticky bit, représenté par le t dans le troisième groupe des permissions. Un t minuscule signifie que le sticky bit est activé et que les autres ont des permissions d'exécution. T majuscule signifie que le sticky bit est activé et que les autres n’ont pas de droits d’exécution. 对于"粘性位"也是如此，由第三组权限中的 t 表示。 小写字母 t 表示粘性位已打开且其他人具有执行权限。 大写 T 表示粘性位已打开，其他人没有执行权限。
+
+
+# 4) Comment créer un répertoire nommé Box dans lequel tous les fichiers sont
+# automatiquement détenus par le groupe users et ne peuvent être supprimés que par
+# l’utilisateur qui les a créés ? 创建一个名为Box的目录，其中所有文件自动归用户组所有，并且只能由创建它们的用户删除。
+mkdir Box
+chown :users Box/ # Box/下文件所有者是：本人
+chmod g+wxs,o+t Box/
+
+
+
+
+1. En tant que root, exécutez la commande useradd -m dave pour ajouter un nouveau compte utilisateur. Quelles sont les opérations effectuées par cette commande ? 以root身份运行命令 useradd -m dave 添加新用户帐户。 该命令执行哪些操作？
+La commande ajoute un nouvel utilisateur nommé dave, à la liste des utilisateurs du système. Le répertoire personnel de dave est créé (par défaut /home/dave) et les fichiers et répertoires contenus dans le répertoire squelette sont copiés dans le répertoire personnel. Enfin, un nouveau groupe est créé avec le même nom que le compte utilisateur.
+
+2. Maintenant que vous avez créé le compte dave, cet utilisateur peut-il se connecter au système ? 现在已经创建了dave账号，这个用户可以登录系统吗？
+Non, parce que le compte dave est verrouillé (voir le point d’exclamation dans /etc/shadow).
+# cat /etc/shadow | grep dave
+dave:!:18015:0:99999:7:::
+Si vous définissez un mot de passe pour dave, le compte sera déverrouillé. Vous pouvez le faire à l’aide de la commande passwd.
+# passwd dave
+Changing password for user dave.
+New UNIX password:
+Retype new UNIX password:
+passwd: all authentication tokens updated successfully.
+
+3. Identifier l’ID utilisateur (UID) et l’ID groupe (GID) de dave et de tous les membres du groupe dave. 确定dave的用户ID（UID）和组ID（GID）以及dave组的所有成员。
+# cat /etc/passwd | grep dave
+dave:x:1015:1019::/home/dave:/bin/sh
+# cat /etc/group | grep 1019
+dave:x:1019:
+L’UID et le GID de dave sont respectivement 1015 et 1019 (les troisième et quatrième champs dans /etc/passwd) et le groupe dave n’a pas de membres (le quatrième champ dans /etc/group est vide).
+
+4. Créez les groupes sys_admin, web_admin et db_admin et identifiez leurs ID de groupe (GID). 创建 sys_admin、web_admin 和 db_admin 组并确定它们的组 ID (GID)。
+# groupadd sys_admin
+# groupadd web_admin
+# groupadd db_admin
+# cat /etc/group | grep admin
+sys_admin:x:1020:
+web_admin:x:1021:
+db_admin:x:1022:
+Les GID pour les groupes sys_admin, web_admin et db_admin sont respectivement 1020, 1021 et 1022.
+
+5. Ajoutez un nouveau compte utilisateur nommé carol avec l’UID 1035 et définir sys_admin comme son groupe primaire et web_admin et db_admin comme ses groupes secondaires. 添加一个名为carol 的新用户帐户，UID 为1035，并将sys_admin 设置为主组，将web_admin 和db_admin 设置为次组。
+# useradd -u 1035 -g 1020 -G web_admin,db_admin carol
+# id carol
+uid=1035(carol) gid=1020(sys_admin) groups=1020(sys_admin),1021(web_admin),1022(db_admin)
+6. Supprimez les comptes utilisateurs dave et carol et les groupes sys_admin, web_admin et db_admin que vous avez créés précédemment. 删除您之前创建的 dave 和 carol 用户帐户以及 sys_admin、web_admin 和 db_admin组。
+# userdel -r dave
+# userdel -r carol
+# groupdel sys_admin
+# groupdel web_admin
+# groupdel db_admin
+
+7. Exécutez la commande ls -l /etc/passwd /etc/group /etc/shadow /etc/gshadow et décrivez la sortie qu’elle vous donne en termes de permissions de fichiers. Lesquels de ces quatre fichiers sont ombragés (shadowed) pour des raisons de sécurité ? Supposons que votre système utilise des mots de passe "shadow".
+# ls -l /etc/passwd /etc/group /etc/shadow /etc/gshadow
+-rw-r--r-- 1 root root    853 mag  1 08:00 /etc/group
+-rw-r----- 1 root shadow 1203 mag  1 08:00 /etc/gshadow
+-rw-r--r-- 1 root root   1354 mag  1 08:00 /etc/passwd
+-rw-r----- 1 root shadow 1563 mag  1 08:00 /etc/shadow
+Les fichiers /etc/passwd et /etc/group sont lisibles par tout le monde et sont filtrés pour des raisons de sécurité. Lorsque les mots de passe shadow sont utilisés, vous pouvez voir un x dans le deuxième champ de ces fichiers car les mots de passe hachés des utilisateurs et des groupes sont stockés dans /etc/shadow et /etc/gshadow, qui ne sont lisibles que par root et, dans certains systèmes, également par les membres appartenant au groupe shadow.
+8.    Exécutez la commande ls -l /usr/bin/passwd. Quel bit spécial est défini et quelle est sa signification ?
+# ls -l /usr/bin/passwd
+-rwsr-xr-x 1 root root 42096 mag 17  2015 /usr/bin/passwd
+La commande passwd a le bit SUID activé (le quatrième caractère de cette ligne), ce qui signifie que la commande est exécutée avec les privilèges du propriétaire du fichier (donc root). C’est ainsi que les utilisateurs ordinaires peuvent modifier leur mot de passe.
+

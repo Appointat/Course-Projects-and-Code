@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo z.c@etu.utc.fr | sed 's/\(.*\)@\(.*\)/login=\1 domaine=\2/'

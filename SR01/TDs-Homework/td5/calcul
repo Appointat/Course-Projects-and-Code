@@ -1,0 +1,14 @@
+#!/bin/bash
+
+option=$1
+if [ $option = "a" ]
+then
+	re=$(($3+$2))
+elif [ $option = "p" ]
+then
+	re=$(($3*$2))
+else
+	re=$(($2/$3))
+fi
+
+echo $re

@@ -1,0 +1,49 @@
+#!/bin/bash
+# 1) afficher la liste des utilisateurs
+cat /etc/passwd | cut -d: -f1 # 'cut' -d用:来分隔成子项, -f选择第1项
+
+
+# 2) afficher la liste des groupes
+cat /etc/group | cut -d: -f1
+
+
+# 3) se mettre en mode root
+sudo -i
+
+
+# 4) créer un dossier
+mkdir Sauvegarde # [nom]
+
+
+# 5) configuration des information des groupes et des utilisateur
+cp /etc/passwd /etc/group /etc/shadow /etc/gshadow Sauvegarde # shadow is for the password
+
+
+# 6) créer les groupes et les utilisateurs
+groupadd -g 1025 LINUX
+groupadd -g 1026 WINDOWS
+groupadd -g 1027 GroupD
+groupadd -g 1028 GroupV
+mkdir /home/{linux, windows}
+useradd --uid 2022 malena --home /home/linux/melena --create-home --groups LINUX --gid LINUX --shell /bin/bash
+useradd --uid 2023 xavier --home /home/linux/xavier --create-home --groups LINUX --gid LINUX --shell /bin/bash
+useradd --uid 2024 marie --home /home/windows/marie --create-home --groups WINDOWS --gid WINDOWS --shell /bin/bash
+useradd --uid 2025 david --home /home/windows/david --create-home --groups WINDOWS --gid WINDOWS --shell /bin/bash
+
+
+# 7) définir les mots de passe pour chaque utilisateur
+passwd melena
+passwd xavier
+passwd marie
+passwd david
+
+
+# 8) Configurer les paramètres du mot de passe et du compte
+chage melena # methode 1
+passwd melena -x 60 -n 45 -w 5 -i 365
+# -x --maxday
+# -n -- mindays
+# -w -- warndays
+# -i --inactive
+
+ 

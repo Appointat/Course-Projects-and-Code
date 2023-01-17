@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Bojour, les amis" | grep [[:punct:] | [:space:]]
+
+
+# another method
+echo "Bojour, les amis" | grep [[:space:],[:punct:]]
+
+
+# another method
+echo "Bojour, les amis" | grep [[:punct:],[:space:]]
+

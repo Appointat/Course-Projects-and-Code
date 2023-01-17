@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# prenom=jean nom=bon domaine=utc.fr
+echo prenom=jean nom=bon domaine=utc.fr | sed 's/.*=\(.*\) .*=\(.*\) .*=\(.*\)/\1.\2@\3/'

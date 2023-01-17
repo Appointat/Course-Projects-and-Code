@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+# Would like use a regular expression
+# grep -E 
+
+# 
+# grep -P
+
+# Lists the names of files whose contents conform to the specified pattern.
+# grep -l
+
+#
+# grep -L
+
+# Lists the lines that adept the specified pattern.
+# grep -v
+
+
+# number of the lines found
+# grep -c
+
+# Before displaying the row that conforms to the style, output the column number of the row
+# grep -n

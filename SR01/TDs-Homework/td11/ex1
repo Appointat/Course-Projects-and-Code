@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Donner la commande permettant d’afficher les informations concernant le login courant.
+id
+
+
+# Donner la commande permettant d’afficher les informations concernant l’utilisateur Malena.
+id Malena
+
+
+# Donner la commande permettant de lister les utilisateurs connectés sur le serveur.
+who # afficher plus des informations
+w # afficher moins des informations
+
+
+# Donner la commande permettant de savoir depuis quelle console (shelll) êtes-vous connecté.
+echo $SHELL # $SHELL est le shell prefere de l'utisilateur
+echo $0 # Affichier le nom de la console ou du script en cours d'exécution
+cat /etc/shells

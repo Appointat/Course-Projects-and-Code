@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "ftp://www.utc.fr" | grep '^[http|ftp]\+://\([[:alpha:]]\.\?[[:alpha:]]\+\)\{,\}'

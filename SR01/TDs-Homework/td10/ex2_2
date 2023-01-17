@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep -cv "^06[[:digit:]]\{8\}" tel.txt

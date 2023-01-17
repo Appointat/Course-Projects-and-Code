@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# To select a line that includes at least one "punctuation"
+echo "Bonjour, les amis" | grep [[:punct:]]
+
+# To select a line that includes at least one "spacec"
+echo "Bonjour, les amis" | grep [[:space:]]

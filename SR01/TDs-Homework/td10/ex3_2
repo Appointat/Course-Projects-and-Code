@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "http://www.utc.fr" | grep '^[http]\+://\([[:alpha:]]\.\?[[:alpha:]]\+\)\{,\}'

@@ -1,0 +1,48 @@
+1.    En tant que root, exécutez la commande useradd -m dave pour ajouter un nouveau compte utilisateur. Quelles sont les opérations effectuées par cette commande ? 
+La commande ajoute un nouvel utilisateur nommé dave, à la liste des utilisateurs du système. Le répertoire personnel de dave est créé (par défaut /home/dave) et les fichiers et répertoires contenus dans le répertoire squelette sont copiés dans le répertoire personnel. Enfin, un nouveau groupe est créé avec le même nom que le compte utilisateur.
+2.    Maintenant que vous avez créé le compte dave, cet utilisateur peut-il se connecter au système ?
+Non, parce que le compte dave est verrouillé (voir le point d’exclamation dans /etc/shadow).
+# cat /etc/shadow | grep dave
+dave:!:18015:0:99999:7:::
+Si vous définissez un mot de passe pour dave, le compte sera déverrouillé. Vous pouvez le faire à l’aide de la commande passwd.
+# passwd dave
+Changing password for user dave.
+New UNIX password:
+Retype new UNIX password:
+passwd: all authentication tokens updated successfully.
+3.    Identifier l’ID utilisateur (UID) et l’ID groupe (GID) de dave et de tous les membres du groupe dave.
+# cat /etc/passwd | grep dave
+dave:x:1015:1019::/home/dave:/bin/sh
+# cat /etc/group | grep 1019
+dave:x:1019:
+L’UID et le GID de dave sont respectivement 1015 et 1019 (les troisième et quatrième champs dans /etc/passwd) et le groupe dave n’a pas de membres (le quatrième champ dans /etc/group est vide).
+4.    Créez les groupes sys_admin, web_admin et db_admin et identifiez leurs ID de groupe (GID).
+# groupadd sys_admin
+# groupadd web_admin
+# groupadd db_admin
+# cat /etc/group | grep admin
+sys_admin:x:1020:
+web_admin:x:1021:
+db_admin:x:1022:
+Les GID pour les groupes sys_admin, web_admin et db_admin sont respectivement 1020, 1021 et 1022.
+5.    Ajoutez un nouveau compte utilisateur nommé carol avec l’UID 1035 et définir sys_admin comme son groupe primaire et web_admin et db_admin comme ses groupes secondaires.
+# useradd -u 1035 -g 1020 -G web_admin,db_admin carol
+# id carol
+uid=1035(carol) gid=1020(sys_admin) groups=1020(sys_admin),1021(web_admin),1022(db_admin)
+6.    Supprimez les comptes utilisateurs dave et carol et les groupes sys_admin, web_admin et db_admin que vous avez créés précédemment.
+# userdel -r dave
+# userdel -r carol
+# groupdel sys_admin
+# groupdel web_admin
+# groupdel db_admin
+7.    Exécutez la commande ls -l /etc/passwd /etc/group /etc/shadow /etc/gshadow et décrivez la sortie qu’elle vous donne en termes de permissions de fichiers. Lesquels de ces quatre fichiers sont ombragés (shadowed) pour des raisons de sécurité ? Supposons que votre système utilise des mots de passe "shadow".
+# ls -l /etc/passwd /etc/group /etc/shadow /etc/gshadow
+-rw-r--r-- 1 root root    853 mag  1 08:00 /etc/group
+-rw-r----- 1 root shadow 1203 mag  1 08:00 /etc/gshadow
+-rw-r--r-- 1 root root   1354 mag  1 08:00 /etc/passwd
+-rw-r----- 1 root shadow 1563 mag  1 08:00 /etc/shadow
+Les fichiers /etc/passwd et /etc/group sont lisibles par tout le monde et sont filtrés pour des raisons de sécurité. Lorsque les mots de passe shadow sont utilisés, vous pouvez voir un x dans le deuxième champ de ces fichiers car les mots de passe hachés des utilisateurs et des groupes sont stockés dans /etc/shadow et /etc/gshadow, qui ne sont lisibles que par root et, dans certains systèmes, également par les membres appartenant au groupe shadow.
+8.    Exécutez la commande ls -l /usr/bin/passwd. Quel bit spécial est défini et quelle est sa signification ?
+# ls -l /usr/bin/passwd
+-rwsr-xr-x 1 root root 42096 mag 17  2015 /usr/bin/passwd
+La commande passwd a le bit SUID activé (le quatrième caractère de cette ligne), ce qui signifie que la commande est exécutée avec les privilèges du propriétaire du fichier (donc root). C’est ainsi que les utilisateurs ordinaires peuvent modifier leur mot de passe.

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cat tel.txt | grep '^06[[:digit:]]\{8\}'
+
+

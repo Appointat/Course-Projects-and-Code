@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# 1)
+touch emptyfile
+chmod 4 emptyfile
+chmod 44 emptyfile
+
+
+# 2) 
+ls -l /tmp # drwxrwxrwt 19 root root 16K Dec 21 18:58 tmp 
+# delete permission : write
+# /tmp est ce que nous appelons un répertoire accessible en écriture pour tous, ce qui signifie que tout utilisateur peut y écrire. Mais nous ne voulons pas qu’un utilisateur modifie des fichiers créés par d’autres, donc le sticky bit est activé (comme indiqué par le t sur les permissions pour les autres). Cela signifie qu’un utilisateur peut supprimer des fichiers dans /tmp, mais seulement s’il a créé ces fichiers. /tmp 是我们所说的可写目录，这意味着任何用户都可以写入它。 但是我们不希望用户修改其他人创建的文件，因此"粘性位"处于打开状态（如其他人权限上的 t 所示）。 这意味着用户可以删除 /tmp 中的文件，但前提是他们创建了这些文件。
+
+
+# 3)
+chmod u-x test.sh
+ls -l test.sh # -rwSr-xr-x 1 carol carol 33 Dec 11 10:36 test.sh
+# le bit SUID montrent un s remplaçant le x sur les permissions
+# Nous avons supprimé les permissions d’exécution pour l’utilisateur qui possède le fichier. Le s (ou t) prend la place du x sur la sortie de ls -l, le système a donc besoin d’un moyen de montrer si l’utilisateur a des permissions d’exécution ou non. Il le fait en modifiant la casse du caractère spécial. 我们删除了拥有该文件的用户的执行权限。 s（或 t）取代了 ls -l 输出中的 x，因此系统需要一种方法来显示用户是否具有执行权限。 它通过改变特殊字符的大小写来做到这一点。
+# Un s minuscule sur le premier groupe de permissions signifie que l’utilisateur qui possède le fichier a des permissions d’exécution et que le bit SUID est activé. Un S majuscule signifie que l’utilisateur qui possède le fichier n’a pas (-) les permissions d’exécution et que le bit SUID est activé. 第一个权限组上的小写 s 表示拥有该文件的用户具有执行权限并且 SUID 位已打开。 大写 S 表示拥有该文件的用户没有 (-) 执行权限并且设置了 SUID 位。
+# On peut en dire autant du SGID. Un s minuscule sur le deuxième groupe de permissions signifie que le groupe qui possède le fichier a des permissions d’exécution et que le bit SGID est activé. Un S majuscule signifie que le groupe qui possède le fichier n’a pas les permissions d’exécution (-) et que le bit SGID est activé. SGID 也是如此。 第二个权限组上的小写 s 表示拥有该文件的组具有执行权限并且 SGID 位已打开。 大写 S 表示拥有该文件的组没有执行权限 (-)，并且 SGID 位已打开。
+# C'est également vrai pour le sticky bit, représenté par le t dans le troisième groupe des permissions. Un t minuscule signifie que le sticky bit est activé et que les autres ont des permissions d'exécution. T majuscule signifie que le sticky bit est activé et que les autres n’ont pas de droits d’exécution. 对于"粘性位"也是如此，由第三组权限中的 t 表示。 小写字母 t 表示粘性位已打开且其他人具有执行权限。 大写 T 表示粘性位已打开，其他人没有执行权限。
+
+
+# 4) Comment créer un répertoire nommé Box dans lequel tous les fichiers sont
+# automatiquement détenus par le groupe users et ne peuvent être supprimés que par
+# l’utilisateur qui les a créés ?
+mkdir Box
+chown :users Box/
+chmod g+wxs,o+t Box/
+
